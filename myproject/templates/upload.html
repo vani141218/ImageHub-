@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Upload Image {% endblock title %}
+{% block body %}
+<br>
+<div class="container1">
+    <div class="py-4 text-center">
+        <div class="container2">
+        <h1 class="mb-3" style = "font-family: comic sans ms; color: rgb(255, 20, 147);">Upload Image</h1><br>
+        <form action="" method="post" enctype="multipart/form-data" style = "font-family: bookman old style; color: rgb(6, 40, 101);">
+            {% csrf_token %}
+            <h5>Enter Image Name:</h5> {{form.name}}<br><br>
+            <h5>Enter Description:</h5>
+            {{form.description}}<br><br>
+            {{form.photo}}<br><br>
+            <input type ="submit" class="btn btn-danger" value="Upload" style = "background-color: blue; border-color: rgb(255,218,185); border-radius: 10px">
+        </form>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

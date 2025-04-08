@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}HOME {% endblock title %}
+{% block body %}
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://i.pinimg.com/originals/a1/11/0b/a1110b8c6adaa0a6b7293ebeb579ef1c.jpg" alt="First slide" style="height: 75vh; width: 100vw;">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Welcome to Image Hub</h2><br>
+        <h5>Frozen moments of laughter, love, and life, waiting to be rediscovered and relived.</h5>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src= "{% static 'images/camera.png' %}" alt="Second slide" style="height: 75vh; width: 100vw;">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Welcome to Image Hub</h2><br>
+        <h5>Every photograph is a love letter to a moment that will never exist again.</h5>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://www.travelworldplanet.com/wp-content/uploads/2022/06/Tibet-House-Museum.jpg" alt="Third slide" style="height: 75vh; width: 100vw;">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Welcome to Image Hub</h2><br>
+        <h5>The silent storytellers, preserving whispers of the past for the eyes of the future.</h5>
+      </div>
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div><br>
+
+
+
+
+
+
+
+<div style = "font-family: comic sans ms;">
+  <label class="rounded-label">Wallpaper</label>
+  <label class="rounded-label">Nature</label>
+  <label class="rounded-label">Travel</label>
+  <label class="rounded-label">Film</label>
+  <label class="rounded-label">People</label>
+  <label class="rounded-label">Animals</label>
+  <label class="rounded-label">Food & Drink</label>
+  <label class="rounded-label">Sports</label>
+  <label class="rounded-label">Space</label>
+  <label class="rounded-label">Love</label>
+  <label class="rounded-label">Health</label>
+  <label class="rounded-label">Texture</label>
+  <label class="rounded-label">God</label>
+  <label class="rounded-label">Lifestyle</label>
+  <label class="rounded-label">Shopping</label>  
+  <label class="rounded-label">Beauty</label>
+ </div><br>
+  
+
+<div class="all-display">
+<div class="row">
+   {% for image in img %}
+     <div class="col-sm-2">
+       <div class="card m-2" data-image-id="{{ loop.index }}"> 
+         <a href="{% url 'about' %}" target="_blank" onclick="openImageInNewPage('{{ image.photo.url }}')">
+          <img src="{{ image.photo.url }}" alt="{{ image.data }}" class="card-img-top only-image" height="200px" width="180px"></a>
+         <div class="img-container">
+          
+          <!--<a href="#" onclick="toggleImageSize('image-{{ loop.index }}')" class="download-link">
+            <div style="background-color: black; padding-left: 10px;">Download</div></a>  -->
+
+
+          <a href="{{ image.photo.url }}" onclick="openImageInNewPage('{{ image.photo.url }}')" download="{{ image.name }}.jpg" class="download-link"><div style = "background-color: black; padding-left: 10px;">Download</div></a>
+        </div>
+         
+         <div class="card-footer crd_foot"  style="border-radius: 6px;">
+           <small class="text-muted">{{ image.data }}</small>
+           <div class= "pridi-bold" style = "color: rgb(12, 12, 12);">{{ image.name }}</div>
+
+          
+           <div class="text playball-regular" id="myText1" style = "color: rgb(15, 15, 15); font-size: 14px;">
+            {{ image.description }}
+
+           </div>
+          <span class="read-more-btn" style = "font-size: 12px;">read more...</span>
+           
+          <div class="like-container"> <div class="container mt-3">
+            <div class="row">
+              <div class="col-md-86 offset-md-2 text-right" style = "color: grey; font-size:11px;" >
+                <button type="button" class="btn btn-primary like-button">
+                  <i class="far fa-thumbs-up"></i>Like 
+                </button>
+                <span class="like-count">0</span> Likes
+              </div>
+            </div>
+          </div></div>
+
+         </div>
+       </div>
+     </div>
+   {% endfor %}
+   
+ </div>
+</div>
+ <script src="https://kit.fontawesome.com/your_fontawesome_key.js" crossorigin="anonymous"></script>
+ <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+ <script>
+   $(document).ready(function() {
+     $('.card').each(function() { // Iterate through each card
+       const card = $(this);
+       const imageId = card.data('image-id');
+       const likeButton = card.find('.like-button');
+       const likeCountSpan = card.find('.like-count');
+       let isLiked = false;
+       let likeCount = 0;
+ 
+       likeButton.click(function() {
+         if (isLiked) {
+           likeButton.html('<i class="far fa-thumbs-up"></i> Like');
+           likeCount--;
+         } else {
+           likeButton.html('<i class="fa-solid fa-thumbs-up"></i> Liked');
+           likeCount++;
+         }
+         likeCountSpan.text(likeCount);
+         isLiked = !isLiked;
+       });
+     });
+   });
+
+  
+   document.addEventListener('DOMContentLoaded', function() {
+  const cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    const textElement = card.querySelector('.text');
+    const buttonElement = card.querySelector('.read-more-btn');
+
+    buttonElement.addEventListener('click', () => {
+      textElement.classList.toggle('expanded');
+      buttonElement.textContent = textElement.classList.contains('expanded') ? 'read less' : 'read more...';
+    });
+  });
+});
+
+
+
+
+ </script>
+
+{% endblock body %}
+far fa-thumbs-up
